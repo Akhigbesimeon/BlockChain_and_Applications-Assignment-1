@@ -8,7 +8,7 @@ This project implements a decentralized intellectual property and fractional own
 
 * **File Type:** `png` 
 
-* **Registered SHA-256 Hash:** `0x56059b785a9e1a05a6714e1d783141c7e4f3cca5270aebd2a37bbac0ec009ed7`
+* **Registered SHA-256 Hash:** `0xf32dc05242d2bb034eefabdf8dd4afc60d7f50b8eae92c2e73156e945cedacb5`
 
 ## Technical Specifications
 * **Hardhat Version:** `^2.28.0`
