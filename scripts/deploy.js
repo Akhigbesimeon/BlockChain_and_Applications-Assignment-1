@@ -3,7 +3,7 @@ const hre = require("hardhat");
 async function main() {
   const [deployer] = await hre.ethers.getSigners();
   console.log("Deploying contracts with the account:", deployer.address);
-  const logoHash = "0x56059b785a9e1a05a6714e1d783141c7e4f3cca5270aebd2a37bbac0ec009ed7";
+  const logoHash = "0xf32dc05242d2bb034eefabdf8dd4afc60d7f50b8eae92c2e73156e945cedacb5";
 
   // Deploy Asset Registry
   const Registry = await hre.ethers.getContractFactory("ALUAssetRegistry");
