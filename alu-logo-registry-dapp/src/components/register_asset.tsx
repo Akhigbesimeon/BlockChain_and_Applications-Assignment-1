@@ -73,7 +73,7 @@ const RegisterAsset = () => {
     <View style={styles.card}>
       <Text style={styles.header}>Register New Asset</Text>
       
-      // File Upload 
+      {/* File Upload */}
       <View style={styles.inputGroup}>
         <Text style={styles.label}>1. Select Logo File</Text>
         <input 
@@ -84,12 +84,12 @@ const RegisterAsset = () => {
         />
       </View>
 
-      //Image Preview 
+      {/* Image Preview */}
       {previewUrl && (
         <Image source={{ uri: previewUrl }} style={styles.preview} resizeMode="contain" />
       )}
 
-      // Hash Display
+      {/* Hash Display */}
       {hash ? (
         <View style={styles.hashBox}>
           <Text style={styles.hashLabel}>Generated Hash (bytes32):</Text>
@@ -97,7 +97,7 @@ const RegisterAsset = () => {
         </View>
       ) : null}
 
-      // Form Fields
+      {/* Form Fields */}
       <View style={styles.inputGroup}>
         <Text style={styles.label}>2. Asset Name</Text>
         <TextInput 
@@ -117,7 +117,7 @@ const RegisterAsset = () => {
         />
       </View>
 
-      // Submit Button
+      {/* Submit Button */}
       <TouchableOpacity 
         style={[styles.button, (!hash || !assetName || loading) && styles.disabledButton]} 
         onPress={handleRegister}
@@ -128,7 +128,7 @@ const RegisterAsset = () => {
         </Text>
       </TouchableOpacity>
 
-      // Status Message
+      {/* Status Message */}
       {message ? <Text style={styles.message}>{message}</Text> : null}
     </View>
   );

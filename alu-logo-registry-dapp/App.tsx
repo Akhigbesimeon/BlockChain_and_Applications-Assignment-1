@@ -32,7 +32,7 @@ const MainScreen = () => {
             <Text style={styles.infoText}>ALUT Balance: {balance}</Text>
           </View>
           
-          //Render the Registration Form 
+          {/* Render the Registration Form */}
           <RegisterAsset />
           
         </View>
