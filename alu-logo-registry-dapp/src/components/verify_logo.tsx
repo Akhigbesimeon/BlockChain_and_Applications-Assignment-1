@@ -1,4 +1,3 @@
-// src/components/VerifyLogo.tsx
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { ethers } from 'ethers';
@@ -8,6 +7,7 @@ import { generateFileHash } from '../utils/hash_generator';
 const REGISTRY_ADDRESS = "0x5fbdb2315678afecb367f032d93f642f64180aa3"; 
 
 const VerifyLogo = () => {
+  const [tokenId, setTokenId] = useState('');
   const [manualHash, setManualHash] = useState('');
   const [loading, setLoading] = useState(false);
   const [verificationStatus, setVerificationStatus] = useState<'idle' | 'authentic' | 'fake'>('idle');
@@ -20,6 +20,11 @@ const VerifyLogo = () => {
   };
 
   const verifyHashOnChain = async (hashToVerify: string) => {
+    if (!tokenId.trim()) {
+      alert("Please enter a Token ID first!");
+      return;
+    }
+
     setLoading(true);
     setVerificationStatus('idle');
     setMetadata(null);
@@ -27,21 +32,23 @@ const VerifyLogo = () => {
     try {
       const contract = getReadOnlyContract();
       
-      // Call boolean verification function
-      const isAuthentic = await contract.verifyLogoIntegrity(hashToVerify);
+      // Call the smart contract function
+      const [isAuthentic, message] = await contract.verifyLogoIntegrity(tokenId, hashToVerify);
       
       if (isAuthentic) {
         setVerificationStatus('authentic');
-        // Fetch the metadata 
-        const assetData = await contract.getAsset(hashToVerify);
+        
+        // Fetch the metadata using the tokenId
+        const assetData = await contract.getAsset(tokenId);
+        
         setMetadata({
-          name: assetData[0], 
-          fileType: assetData[1]
+          name: assetData.assetName, 
+          fileType: assetData.fileType
         });
       } else {
         setVerificationStatus('fake');
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Verification error:", err);
       setVerificationStatus('fake'); 
     }
@@ -76,13 +83,26 @@ const VerifyLogo = () => {
       <Text style={styles.header}>Public Logo Verification</Text>
       <Text style={styles.subtext}>Anyone can verify an asset. No wallet required.</Text>
 
+      {/* Token ID Input */}
+      <View style={styles.section}>
+        <Text style={styles.label}>Step 1: Enter Token ID</Text>
+        <TextInput
+          style={styles.textInput}
+          placeholder="e.g., 1"
+          value={tokenId}
+          onChangeText={setTokenId}
+          keyboardType="numeric"
+        />
+      </View>
+
       {/* Verify by File */}
       <View style={styles.section}>
-        <Text style={styles.label}>Option 1: Upload a File to Verify</Text>
+        <Text style={styles.label}>Step 2 (Option A): Upload a File to Verify</Text>
         <input 
           type="file" 
           accept="image/*" 
           onChange={handleFileChange} 
+          disabled={!tokenId.trim()}
         />
       </View>
 
@@ -90,14 +110,19 @@ const VerifyLogo = () => {
 
       {/* Verify by Hash */}
       <View style={styles.section}>
-        <Text style={styles.label}>Option 2: Paste a SHA-256 Hash</Text>
+        <Text style={styles.label}>Step 2 (Option B): Paste a SHA-256 Hash</Text>
         <TextInput
           style={styles.textInput}
           placeholder="Paste 0x... hash here"
           value={manualHash}
           onChangeText={setManualHash}
+          editable={!!tokenId.trim()}
         />
-        <TouchableOpacity style={styles.button} onPress={handleManualVerification} disabled={loading}>
+        <TouchableOpacity 
+           style={[styles.button, !tokenId.trim() && { opacity: 0.5 }]} 
+           onPress={handleManualVerification} 
+           disabled={loading || !tokenId.trim()}
+        >
           <Text style={styles.buttonText}>{loading ? "Checking..." : "Verify Hash"}</Text>
         </TouchableOpacity>
       </View>
@@ -117,7 +142,7 @@ const VerifyLogo = () => {
 
       {verificationStatus === 'fake' && (
         <View style={styles.errorBox}>
-          <Text style={styles.resultTitle}> Warning: This logo has been modified or is not registered.</Text>
+          <Text style={styles.resultTitle}> Warning: This logo has been modified or does not match this Token ID.</Text>
         </View>
       )}
     </View>
