@@ -85,7 +85,7 @@ const VerifyLogo = () => {
 
       {/* Token ID Input */}
       <View style={styles.section}>
-        <Text style={styles.label}>Step 1: Enter Token ID</Text>
+        <Text style={styles.label}>Enter Token ID</Text>
         <TextInput
           style={styles.textInput}
           placeholder="e.g., 1"
