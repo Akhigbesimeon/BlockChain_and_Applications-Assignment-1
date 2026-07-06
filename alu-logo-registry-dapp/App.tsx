@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-nati
 import { WalletProvider, WalletContext } from './src/context/wallet_context';
 import RegisterAsset from './src/components/register_asset';
 import VerifyLogo from './src/components/verify_logo';
+import TokenDashboard from './src/components/token_dashboard';
 
 const MainScreen = () => {
   const context = useContext(WalletContext);
@@ -35,11 +36,13 @@ const MainScreen = () => {
           
           {/* Render the Registration Form */}
           <RegisterAsset />
-          
+
+          {/* Render the Token Dashboard */}
+          <TokenDashboard />
         </View>
       )}
 
-      {/* --- Public Verification Section --- */}
+      {/* Public Verification Section */}
       <View style={{ marginTop: 40, width: '100%', alignItems: 'center' }}>
         <VerifyLogo />
       </View>
