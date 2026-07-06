@@ -97,7 +97,7 @@ const VerifyLogo = () => {
 
       {/* Verify by File */}
       <View style={styles.section}>
-        <Text style={styles.label}>Step 2 (Option A): Upload a File to Verify</Text>
+        <Text style={styles.label}>Upload a File to Verify</Text>
         <input 
           type="file" 
           accept="image/*" 
@@ -110,7 +110,7 @@ const VerifyLogo = () => {
 
       {/* Verify by Hash */}
       <View style={styles.section}>
-        <Text style={styles.label}>Step 2 (Option B): Paste a SHA-256 Hash</Text>
+        <Text style={styles.label}>Paste a SHA-256 Hash</Text>
         <TextInput
           style={styles.textInput}
           placeholder="Paste 0x... hash here"
