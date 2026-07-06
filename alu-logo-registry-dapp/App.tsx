@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { WalletProvider, WalletContext } from './src/context/wallet_context';
+import RegisterAsset from './src/components/register_asset';
 
 const MainScreen = () => {
   const context = useContext(WalletContext);
@@ -9,13 +10,13 @@ const MainScreen = () => {
 
   const { account, balance, connectWallet, error } = context;
 
-  // helper function to shorten the address like the assignment asks
+  // helper function to shorten address
   const shortenAddress = (address: string) => {
     return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>ALU Asset Registry</Text>
       
       {error && <Text style={styles.error}>{error}</Text>}
@@ -25,12 +26,18 @@ const MainScreen = () => {
           <Text style={styles.buttonText}>Connect Wallet</Text>
         </TouchableOpacity>
       ) : (
-        <View style={styles.infoBox}>
-          <Text style={styles.infoText}>Connected: {shortenAddress(account)}</Text>
-          <Text style={styles.infoText}>ALUT Balance: {balance}</Text>
+        <View style={styles.connectedContainer}>
+          <View style={styles.infoBox}>
+            <Text style={styles.infoText}>Connected: {shortenAddress(account)}</Text>
+            <Text style={styles.infoText}>ALUT Balance: {balance}</Text>
+          </View>
+          
+          //Render the Registration Form 
+          <RegisterAsset />
+          
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
 
@@ -44,11 +51,16 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1, 
     backgroundColor: '#f5f5f5',
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
+    paddingTop: 60, 
+    paddingBottom: 40,
+    paddingHorizontal: 20,
+  },
+  connectedContainer: {
+    width: '100%',
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
@@ -73,6 +85,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 10,
     elevation: 5,
+    marginBottom: 20, 
+    maxWidth: 500,
   },
   infoText: {
     fontSize: 16,
