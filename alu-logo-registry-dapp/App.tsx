@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { WalletProvider, WalletContext } from './src/context/wallet_context';
 import RegisterAsset from './src/components/register_asset';
+import VerifyLogo from './src/components/verify_logo';
 
 const MainScreen = () => {
   const context = useContext(WalletContext);
@@ -37,7 +38,14 @@ const MainScreen = () => {
           
         </View>
       )}
+
+      {/* --- Public Verification Section --- */}
+      <View style={{ marginTop: 40, width: '100%', alignItems: 'center' }}>
+        <VerifyLogo />
+      </View>
+
     </ScrollView>
+
   );
 };
 
