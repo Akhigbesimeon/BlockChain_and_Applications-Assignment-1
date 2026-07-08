@@ -31,17 +31,25 @@ const TokenDashboard = () => {
     const fetchTokenData = async () => {
       if (tokenContract && account) {
         try {
-          //Check if the connected user is the contract owner
+          // Check if the connected user is the contract owner
           const contractOwner = await tokenContract.owner();
           setIsOwner(contractOwner.toLowerCase() === account.toLowerCase());
 
           // Fetch total supply
           const supply = await tokenContract.totalSupply();
-          setTotalSupply(Number(ethers.formatUnits(supply, 18)).toLocaleString());
+          const formattedSupply = Number(ethers.formatUnits(supply, 18));
+          setTotalSupply(formattedSupply.toLocaleString());
 
-          // Fetch ownership percentage of the current wallet
-          const percent = await tokenContract.ownershipPercentage(account);
-          setOwnershipPercent(percent.toString());
+          // Calculate percentage in React instead of Solidity
+          const userBalance = await tokenContract.balanceOf(account);
+          const formattedBalance = Number(ethers.formatUnits(userBalance, 18));
+          
+          if (formattedSupply > 0) {
+            const calculatedPercent = (formattedBalance / formattedSupply) * 100;
+            setOwnershipPercent(calculatedPercent.toFixed(2)); 
+          } else {
+            setOwnershipPercent('0');
+          }
 
         } catch (err) {
           console.error("Error fetching token data:", err);
@@ -59,10 +67,8 @@ const TokenDashboard = () => {
     setMessage('Prompting wallet for approval...');
 
     try {
-      // Convert the user's input amount to wei
-      const amountInWei = ethers.parseUnits(amount, 18);
+      const tx = await tokenContract.distributeShares(recipient, amount);
       
-      const tx = await tokenContract.distributeShares(recipient, amountInWei);
       setMessage('Transaction sent! Waiting for confirmation...');
       
       await tx.wait();
