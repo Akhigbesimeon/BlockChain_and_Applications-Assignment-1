@@ -91,7 +91,7 @@ describe("ALU Assignment Contracts", function () {
       expect(generatedHash.length).to.equal(66);
     });
 
-    it("3. When verifyLogoIntegrity() is called with the correct ALU logo hash, the frontend displays a verification success result", async function () {
+    it("verifyLogoIntegrity() is called with the correct ALU logo hash, the frontend displays a verification success result", async function () {
       await registry.registerAsset("ALU Logo", "png", validHash);
       const [isValid, message] = await registry.verifyLogoIntegrity(1, validHash);
       
