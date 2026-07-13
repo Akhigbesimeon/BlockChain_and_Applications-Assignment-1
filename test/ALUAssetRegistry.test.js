@@ -77,13 +77,13 @@ describe("ALU Assignment Contracts", function () {
   });
 
   describe("Frontend Integration Tests", function () {
-    it("1. The frontend correctly reads the total ALUT token supply from the deployed contract and displays 1,000,000", async function () {
+    it("The frontend correctly reads the total ALUT token supply from the deployed contract and displays 1,000,000", async function () {
       const totalSupply = await token.totalSupply();
       const formattedSupply = Number(ethers.formatUnits(totalSupply, 18));
       expect(formattedSupply).to.equal(1000000);
     });
 
-    it("2. When a file is passed to the hashing function, the correct SHA-256 hash is returned in bytes32 format", async function () {
+    it("When a file is passed to the hashing function, the correct SHA-256 hash is returned in bytes32 format", async function () {
       const mockFileContent = ethers.toUtf8Bytes("mock-image-file-data");
       const generatedHash = ethers.sha256(mockFileContent);
       
@@ -99,7 +99,7 @@ describe("ALU Assignment Contracts", function () {
       expect(message).to.equal("Logo is authentic.");
     });
 
-    it("4. When verifyLogoIntegrity() is called with an incorrect hash, the frontend displays a verification failure result", async function () {
+    it("verifyLogoIntegrity() is called with an incorrect hash, the frontend displays a verification failure result", async function () {
       await registry.registerAsset("ALU Logo", "png", validHash);
       const [isValid, message] = await registry.verifyLogoIntegrity(1, invalidHash);
       
@@ -107,7 +107,7 @@ describe("ALU Assignment Contracts", function () {
       expect(message).to.equal("Warning: logo does not match.");
     });
 
-    it("5. The distributeShares() function correctly updates the recipient's balance after a successful transfer", async function () {
+    it("distributeShares() function correctly updates the recipient's balance after a successful transfer", async function () {
       const initialBalance = await token.balanceOf(addr1.address);
       expect(Number(ethers.formatUnits(initialBalance, 18))).to.equal(0);
       
