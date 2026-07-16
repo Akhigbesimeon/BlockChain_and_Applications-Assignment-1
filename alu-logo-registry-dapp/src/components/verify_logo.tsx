@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import RegistryABI from '../contracts/ALUAssetRegistry.json';
 import { generateFileHash } from '../utils/hash_generator';
 
-const REGISTRY_ADDRESS = "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9"; 
+const REGISTRY_ADDRESS = "0x5fbdb2315678afecb367f032d93f642f64180aa3"; 
 
 const VerifyLogo = () => {
   const [tokenId, setTokenId] = useState('');
