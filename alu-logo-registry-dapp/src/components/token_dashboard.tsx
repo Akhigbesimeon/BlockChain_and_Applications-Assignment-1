@@ -35,20 +35,28 @@ const TokenDashboard = () => {
           const contractOwner = await tokenContract.owner();
           setIsOwner(contractOwner.toLowerCase() === account.toLowerCase());
 
-          // Fetch total supply
+          // Fetch total supply safely with re-render loop protection
           const supply = await tokenContract.totalSupply();
-          const formattedSupply = Number(ethers.formatUnits(supply, 18));
-          setTotalSupply(formattedSupply.toLocaleString());
+          const rawSupplyNumber = Number(ethers.formatUnits(supply, 18));
+          const formattedSupplyString = rawSupplyNumber.toLocaleString();
+          
+          if (formattedSupplyString !== totalSupply) {
+            setTotalSupply(formattedSupplyString);
+          }
 
           // Calculate percentage in React instead of Solidity
           const userBalance = await tokenContract.balanceOf(account);
           const formattedBalance = Number(ethers.formatUnits(userBalance, 18));
           
-          if (formattedSupply > 0) {
-            const calculatedPercent = (formattedBalance / formattedSupply) * 100;
-            setOwnershipPercent(calculatedPercent.toFixed(2)); 
+          if (rawSupplyNumber > 0) {
+            const calculatedPercent = ((formattedBalance / rawSupplyNumber) * 100).toFixed(2);
+            if (calculatedPercent !== ownershipPercent) {
+              setOwnershipPercent(calculatedPercent);
+            }
           } else {
-            setOwnershipPercent('0');
+            if (ownershipPercent !== '0') {
+              setOwnershipPercent('0');
+            }
           }
 
         } catch (err) {

@@ -3,8 +3,8 @@ import { ethers } from 'ethers';
 import RegistryABI from '../contracts/ALUAssetRegistry.json';
 import TokenABI from '../contracts/ALULogoToken.json';
 
-const REGISTRY_ADDRESS = "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512";
-const TOKEN_ADDRESS = "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9";
+const REGISTRY_ADDRESS = "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9";
+const TOKEN_ADDRESS = "0x0165878a594ca255338adfa4d48449f69242eb8f";
 
 interface WalletContextType {
   account: string | null;
@@ -74,14 +74,19 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   // listen for network or account changes
   useEffect(() => {
     if ((window as any).ethereum) {
+      // Listen for account changes
       (window as any).ethereum.on('accountsChanged', (accounts: string[]) => {
         if (accounts.length > 0) {
           setAccount(accounts[0]);
-          // refresh contracts and balance 
         } else {
           setAccount(null);
           setBalance("0");
         }
+      });
+
+      // Listen for network/chain resets
+      (window as any).ethereum.on('chainChanged', () => {
+        window.location.reload();
       });
     }
   }, []);
