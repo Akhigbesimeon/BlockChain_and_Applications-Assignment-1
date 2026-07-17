@@ -149,3 +149,6 @@ If an invalid address string or a string missing the 0x prefix is passed into Et
 
 * **Zero Address Restrictions:**
 In compliance with OpenZeppelin ERC-20 standards, tokens cannot be transferred or distributed to the zero address (`0x0000000000000000000000000000000000000000`). Attempting to do so will cause the smart contract transaction to revert.
+
+## Sources Citation
+* **Gemini:** Used for debugging and readings
