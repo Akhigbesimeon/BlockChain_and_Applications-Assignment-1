@@ -1,4 +1,3 @@
-// src/components/RegisterAsset.tsx
 import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 import { WalletContext } from '../context/wallet_context';
@@ -52,7 +51,28 @@ const RegisterAsset = () => {
       // Wait for the transaction to be mined
       const receipt = await tx.wait();
       
-      setMessage(`Success! Asset Registered on the blockchain.`);
+      // Search the transaction logs for the 'AssetRegistered' event
+      const event = receipt.logs
+        .map((log: any) => {
+          try {
+            return registryContract.interface.parseLog(log);
+          } catch (e) {
+            return null;
+          }
+        })
+        .find((parsed: any) => parsed && parsed.name === "AssetRegistered");
+
+      if (event) {
+        // Extract the assigned Token ID from event arguments
+        const assignedTokenId = event.args[0].toString();
+        
+        setMessage(`Success! Asset Registered. Your Token ID is: #${assignedTokenId}`);
+        alert(`[SUCCESS] Asset Registered! Your Token ID is: #${assignedTokenId}`);
+      } else {
+        setMessage(`Success! Asset Registered on the blockchain.`);
+        alert(`[SUCCESS] Asset Registered on the blockchain.`);
+      }
+
       setHash('');
       setAssetName('');
     } catch (err: any) {
